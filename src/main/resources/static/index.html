@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Spring boot static page</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <ul>
+        <li v-for="food in foods" @click="showFood(food)">{{food.idFood}}</li>
+    </ul>
+    <div v-show="showDetails">
+<h2>Food details</h2>
+        <p>
+            <a :href="'www.facebooc.com/'+ selectedFood.idFood" target="_blank">
+                {{selectedFood.idFood}}-{{selectedFood.name}}
+            </a>
+        </p>
+    </div>
+</div>
+
+<script>
+    const apiURL="http://localhost:8080/api/foods"
+    new Vue({
+        el: '#app',
+        data(){
+            return{
+                foods:[],
+                showDetails:false,
+                selectedFood:''
+
+            }
+        },
+        methods: {
+            showFood(food){
+                this.selectedFood=food;
+                this.showDetails=true
+            }
+        },
+        created(){
+          fetch(apiURL)
+              .then(response=>{
+
+                  return response.json();
+          }).then(foods=>{
+              this.foods=foods
+                console.log(foods);
+            })
+        }
+    })
+</script>
+</body>
+</html>
