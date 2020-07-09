@@ -25,7 +25,7 @@ public class CategoryController {
             List<Category> categories = new ArrayList<Category>();
 
 
-                categoryRepository.findAll().forEach(categories::add);
+            categoryRepository.findAll().forEach(categories::add);
 
 
             return new ResponseEntity<>(categories, HttpStatus.OK);
@@ -48,9 +48,9 @@ public class CategoryController {
     @PostMapping("/categorys")
     public ResponseEntity<Category> createCategory(@RequestBody Category category) {
         try {
-            Category _tutorial = categoryRepository
+            Category categoryrepo = categoryRepository
                     .save(new Category(category.getName()));
-            return new ResponseEntity<>(_tutorial, HttpStatus.CREATED);
+            return new ResponseEntity<>(categoryrepo, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
         }
@@ -63,8 +63,8 @@ public class CategoryController {
         if (categoryData.isPresent()) {
             Category _category = categoryData.get();
             _category.setName(category.getName());
-           // _tutorial.setDescription(tutorial.getDescription());
-           // _tutorial.setPublished(tutorial.isPublished());
+            // _tutorial.setDescription(tutorial.getDescription());
+            // _tutorial.setPublished(tutorial.isPublished());
             return new ResponseEntity<>(categoryRepository.save(_category), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -91,7 +91,6 @@ public class CategoryController {
         }
 
     }
-
 
 
 }
