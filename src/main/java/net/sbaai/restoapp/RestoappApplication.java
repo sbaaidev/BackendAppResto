@@ -2,15 +2,20 @@ package net.sbaai.restoapp;
 
 import net.sbaai.restoapp.dao.IOperation;
 import net.sbaai.restoapp.model.*;
+import net.sbaai.restoapp.service.FilesStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import javax.annotation.Resource;
+
 @SpringBootApplication
 public class RestoappApplication implements CommandLineRunner {
     @Autowired
     IOperation io;
+    @Resource
+    FilesStorageService storageService;
 
     public static void main(String[] args) {
         SpringApplication.run(RestoappApplication.class, args);
@@ -18,6 +23,9 @@ public class RestoappApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        //Initialize Storage
+        storageService.deleteAll();
+        storageService.init();
         io.addCategory(new Category("cat1"));
         io.addCategory(new Category("cat2"));
         io.addCategory(new Category("cat3"));
