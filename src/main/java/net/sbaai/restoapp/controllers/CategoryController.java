@@ -47,10 +47,10 @@ public class CategoryController {
 
     @GetMapping("/categorys/{id}")
     public ResponseEntity<Category> getCategoryById(@PathVariable("id") Long id) {
-        Optional<Category> tutorialData = categoryRepository.findById(id);
+        Optional<Category> category = categoryRepository.findById(id);
 
-        if (tutorialData.isPresent()) {
-            return new ResponseEntity<>(tutorialData.get(), HttpStatus.OK);
+        if (category.isPresent()) {
+            return new ResponseEntity<>(category.get(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -59,9 +59,11 @@ public class CategoryController {
     public ResponseEntity<ResponseMessage> uploadfile(@RequestParam("file") MultipartFile file) {
         String message = "";
         try {
+
             storageService.save(file);
             //message = "Uploaded the file successfully: " + file.getOriginalFilename();
             System.out.println("this file uploded yes");
+            //Thread.sleep(5000);
             currentCategory.setImage(file.getOriginalFilename());
             Category categoryrepo = categoryRepository
                     .save(currentCategory);
@@ -78,7 +80,7 @@ public class CategoryController {
         try {
 
             currentCategory= categoryRepository
-                    .save(new Category(category.getName()));
+                    .save(category);
             return new ResponseEntity<>(currentCategory, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
@@ -90,9 +92,9 @@ public class CategoryController {
         Optional<Category> categoryData = categoryRepository.findById(id);
 
         if (categoryData.isPresent()) {
-            Category _category = categoryData.get();
-            _category.setName(category.getName());
-            return new ResponseEntity<>(categoryRepository.save(_category), HttpStatus.OK);
+            currentCategory= categoryData.get();
+            currentCategory.setName(category.getName());
+            return new ResponseEntity<>(categoryRepository.save(currentCategory), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
