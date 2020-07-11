@@ -12,6 +12,7 @@ public class Category implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idCategory;
     private String name;
+    private String image;
     @OneToMany(mappedBy = "category")
     @JsonIgnore
     private Collection<Food> foods;
@@ -53,5 +54,11 @@ public class Category implements Serializable {
         return name;
     }
 
+    public String getImage() {
+        return image;
+    }
 
+    public void setImage(String image) {
+        this.image = image;
+    }
 }
